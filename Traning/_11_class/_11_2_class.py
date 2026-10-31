@@ -23,8 +23,7 @@ class Character:
 
     @property
     def defence(self):
-        defence =  self.base_defence * self.level
-        return defence
+        return min(self.base_defence * self.level, 90)
 
     @property
     def max_health(self):
@@ -48,9 +47,8 @@ class Ork(Character):
     def defence(self):
         defence = super().defence
         if self.health_points < 50:
-            defence = defence * 3
+            defence = min(defence * 3, 90)
         return defence
-
 
 
 class Elf(Character):
@@ -77,8 +75,8 @@ def fight(*, ch_1, ch_2, ):
     print(f"Персонаж 1-{ch_1}, жив {ch_1.is_alive()}")
     print(f"Персонаж 2-{ch_2}, жив {ch_2.is_alive()}")
 
-ork_1 = Ork(level=4)
-elf_1 = Elf(level=6)
+ork_1 = Ork(level=66)
+elf_1 = Elf(level=75)
 
 fight(ch_1=ork_1, ch_2=elf_1)
 
