@@ -3,6 +3,14 @@ class Character:
     base_attack = 0
     character_name = ""
     base_defence = 0
+    max_level = 3
+
+    def level_up(self):
+        if self.level >= self.max_level:
+            return
+        self.level += 1
+        self.attack_power = self.base_attack * self.level
+        self.health_points += self.max_health // 2
 
     def __init__(self,*, level):
         self.level = level
@@ -66,17 +74,24 @@ class Elf(Character):
 
 
 
-def fight(*, ch_1, ch_2, ):
+def fight(*, ch_1, ch_2):
     while ch_1.is_alive() and ch_2.is_alive():
-      ch_1.attack(target=ch_2)
-      if  ch_2.is_alive():
-          ch_2.attack(target=ch_1)
+        ch_1.attack(target=ch_2)
+        if not ch_2.is_alive():
+            ch_1.level_up()
+            break
+        ch_2.attack(target=ch_1)
+        if not ch_1.is_alive():
+            ch_2.level_up()
 
-    print(f"Персонаж 1-{ch_1}, жив {ch_1.is_alive()}")
-    print(f"Персонаж 2-{ch_2}, жив {ch_2.is_alive()}")
+    for ch in (ch_1, ch_2):
+        status = "alive" if ch.is_alive() else "dead"
+        print(f"{ch.character_name} is {status} {ch}")
 
-ork_1 = Ork(level=66)
-elf_1 = Elf(level=75)
+
+
+ork_1 = Ork(level=1)
+elf_1 = Elf(level=2)
 
 fight(ch_1=ork_1, ch_2=elf_1)
 
